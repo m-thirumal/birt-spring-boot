@@ -9,13 +9,11 @@ import java.util.logging.Level;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.Platform;
 import org.eclipse.birt.report.engine.api.EngineConfig;
-import org.eclipse.birt.report.engine.api.IPDFRenderOption;
 import org.eclipse.birt.report.engine.api.IRenderOption;
 import org.eclipse.birt.report.engine.api.IReportEngine;
 import org.eclipse.birt.report.engine.api.IReportEngineFactory;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.PDFRenderOption;
-import org.eclipse.birt.report.engine.api.RenderOption;
 import org.eclipse.birt.report.engine.api.impl.RunAndRenderTask;
 import org.eclipse.core.internal.registry.RegistryProviderFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -63,7 +61,8 @@ public class ReportService {
         	// Run reports, etc.
         	IReportRunnable design = engine.openReportDesign(rptDesign);
         	 RunAndRenderTask task = (RunAndRenderTask) engine.createRunAndRenderTask(design);
-        	 //task.getAppContext().put(APPCONTEXT_CLOSEINPUTSTREAM, Boolean.TRUE);
+        	// task.getAppContext().put("org.eclipse.birt.report.data.oda.xml.closeInputStream", Boolean.TRUE);
+        	// task.getAppContext().put("org.eclipse.birt.report.data.oda.xml.inputStream", xmlData);
         		//IRenderOption options = new RenderOption();     
 //        		options.setOutputFormat("html");
 //        		options.setOutputFileName("output/resample/eventorder.html");
