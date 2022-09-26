@@ -1,10 +1,13 @@
 package com.thirumal.service;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.Platform;
@@ -13,6 +16,7 @@ import org.eclipse.birt.report.engine.api.IRenderOption;
 import org.eclipse.birt.report.engine.api.IReportEngine;
 import org.eclipse.birt.report.engine.api.IReportEngineFactory;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
+import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
 import org.eclipse.birt.report.engine.api.PDFRenderOption;
 import org.eclipse.birt.report.engine.api.impl.RunAndRenderTask;
 import org.springframework.core.io.ClassPathResource;
@@ -25,7 +29,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReportService {
 
-	public ByteArrayOutputStream generateReport() {
+	public ByteArrayOutputStream generateReport(InputStream xml) {
 	//	logger.debug("Generating report service is started");
 		InputStream template = null;
 		try {
@@ -35,10 +39,10 @@ public class ReportService {
 		}
 		//logger.debug("Template --> {}", template);
 		System.out.println(template);
-		return generate(template);
+		return generate(template, xml);
 	}
 	
-	private ByteArrayOutputStream generate(InputStream rptDesign) {
+	private ByteArrayOutputStream generate(InputStream rptDesign, InputStream xml) {
 		//logger.info("{}:{}", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
         ByteArrayOutputStream outStreamPDF = new ByteArrayOutputStream();
         EngineConfig config;// = new EngineConfig( );
@@ -55,22 +59,33 @@ public class ReportService {
         	    IReportEngineFactory factory = (IReportEngineFactory) Platform
         	            .createFactoryObject( IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY );
         	    IReportEngine engine = factory.createReportEngine( config );
-        	    engine.changeLogLevel( Level.WARNING );
+        	    engine.changeLogLevel( Level.ALL );
         	
         	// Run reports, etc.
         	IReportRunnable design = engine.openReportDesign(rptDesign);
-        	 RunAndRenderTask task = (RunAndRenderTask) engine.createRunAndRenderTask(design);
-        	// task.getAppContext().put("org.eclipse.birt.report.data.oda.xml.closeInputStream", Boolean.TRUE);
-        	// task.getAppContext().put("org.eclipse.birt.report.data.oda.xml.inputStream", xmlData);
+        	IRunAndRenderTask task =  (RunAndRenderTask) engine.createRunAndRenderTask(design);
+        	 task.getAppContext().put("org.eclipse.datatools.enablement.oda.xml.inputStream", xml);
+        	 task.getAppContext().put("org.eclipse.datatools.enablement.oda.xml.closeInputStream", Boolean.TRUE);
+//        	 
+//        	 HashMap<String, Object> contextMap = new HashMap<String, Object>();
+//             contextMap.put(Constants.APPCONTEXT_INPUTSTREAM, xml);
+//             contextMap.put(Constants.APPCONTEXT_CLOSEINPUTSTREAM, Boolean.TRUE);
+//             task.setAppContext(contextMap);
         		//IRenderOption options = new RenderOption();     
 //        		options.setOutputFormat("html");
 //        		options.setOutputFileName("output/resample/eventorder.html");
-        		PDFRenderOption pdfOptions = new PDFRenderOption( );
+        		PDFRenderOption pdfOptions = new PDFRenderOption();
         		pdfOptions.setOutputStream(outStreamPDF);
         		pdfOptions.setSupportedImageFormats("PNG;GIF;JPG;BMP;SWF;SVG");
+        		pdfOptions.closeOutputStreamOnExit(true);
         		pdfOptions.setOutputFormat(IRenderOption.OUTPUT_FORMAT_PDF);
+//        		task = engine.createRunAndRenderTask(design);
+//                task.setAppContext(contextMap);
+        		System.out.println(new BufferedReader(new InputStreamReader(xml))
+        				   .lines().collect(Collectors.joining("\n")));
                 task.setRenderOption(pdfOptions);
                 task.run();
+                task.close();
            //     logger.debug("Closed Successfully");
         	// destroy the engine.
         	
@@ -80,6 +95,7 @@ public class ReportService {
         	   // RegistryProviderFactory.releaseDefault();
         	}catch ( BirtException e1 ){
         	    // Ignore
+        		System.err.println(e1);
         	}
         System.out.println(outStreamPDF);
 		return outStreamPDF;
