@@ -15,7 +15,6 @@ import org.eclipse.birt.report.engine.api.IReportEngineFactory;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.PDFRenderOption;
 import org.eclipse.birt.report.engine.api.impl.RunAndRenderTask;
-import org.eclipse.core.internal.registry.RegistryProviderFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 /**
@@ -78,7 +77,7 @@ public class ReportService {
         	    engine.destroy();
         	    Platform.shutdown();
         	    //Bugzilla 351052
-        	    RegistryProviderFactory.releaseDefault();
+        	   // RegistryProviderFactory.releaseDefault();
         	}catch ( BirtException e1 ){
         	    // Ignore
         	}

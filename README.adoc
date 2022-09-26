@@ -1,6 +1,14 @@
 = BIRT(Business Intelligence Reporting Tool) Report
 
+== Install BIRT Designer in Eclipse
+
+* Go to `Help` -> `Install New Software` -> Add `latest version URL`
+
+
+== Create package
+
+
 
 == API docs
 
-link:http://localhost:1991/swagger-ui/index.html
+link:http://localhost:1991/swagger-ui/index.html[Swagger docs]
