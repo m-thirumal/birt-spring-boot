@@ -26,7 +26,7 @@ public class ReportController {
 	private ReportService reportService;
 	
 	@PostMapping(value="/generate-report", consumes = {"multipart/form-data"})
-	public ResponseEntity<ByteArrayResource> generateReport(@RequestPart(value = "xml", required = true) String xml) {
+	public ResponseEntity<ByteArrayResource> generateReport(@RequestPart(value = "xml", required = true) String xml) throws Exception {
 		var byteArrayOutputStream = reportService.generateReport(new ByteArrayInputStream(xml.getBytes()));
 		byte[] bytes =  byteArrayOutputStream.toByteArray();
 		return ResponseEntity.ok().contentLength(bytes.length).contentType(MediaType.APPLICATION_PDF)

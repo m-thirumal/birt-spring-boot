@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.4</version>
+		<version>2.7.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.thirumal</groupId>
@@ -27,22 +27,17 @@
 		        </exclusion>
     		</exclusions>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>birt</groupId>
-			<artifactId>t</artifactId>
-			<scope>system</scope>
-			<version>1.0</version>
-			
-			<systemPath>${basedir}/libs/org.eclipse.birt.runtime_4.9.0-20220315.jar</systemPath>
-		</dependency>
-		-->
 		<dependency>
 		    <groupId>org.springdoc</groupId>
 		    <artifactId>springdoc-openapi-ui</artifactId>
-		    <version>1.6.11</version>
+		    <version>1.6.12</version>
 		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/org.eclipse.birt.runtime/org.eclipse.birt.runtime -->
+		<dependency>
+		    <groupId>org.eclipse.birt.runtime</groupId>
+		    <artifactId>org.eclipse.birt.runtime</artifactId>
+		    <version>4.4.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
