@@ -1,13 +1,11 @@
 package com.thirumal.service;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.logging.Logger;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.Platform;
@@ -17,7 +15,6 @@ import org.eclipse.birt.report.engine.api.IRenderOption;
 import org.eclipse.birt.report.engine.api.IReportEngine;
 import org.eclipse.birt.report.engine.api.IReportEngineFactory;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
-import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
 import org.eclipse.birt.report.engine.api.PDFRenderOption;
 import org.eclipse.birt.report.engine.api.impl.RunAndRenderTask;
 import org.eclipse.core.internal.registry.RegistryProviderFactory;
@@ -31,23 +28,26 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ReportService {
+	
+	private static final Logger logger = Logger.getLogger(
+		    Thread.currentThread().getStackTrace()[0].getClassName() );
+
 
 	public ByteArrayOutputStream generateReport(InputStream xml) throws Exception {
-		// logger.debug("Generating report service is started");
+		logger.log(Level.INFO, "Generating report service is started");
 		InputStream template = null;
 		try {
 			template = getTemplate("first");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// logger.debug("Template --> {}", template);
-		System.out.println(template);
+		logger.log(Level.INFO, "Template {}", template);
 		return generate(template, xml);
 	}
 
+	@SuppressWarnings("unchecked")
 	private ByteArrayOutputStream generate(InputStream rptDesign, InputStream xml) throws Exception {
-		// logger.info("{}:{}", this.getClass().getSimpleName(),
-		// Thread.currentThread().getStackTrace()[1].getMethodName());
+		logger.log(Level.INFO, "generate method is invoked");
 		ByteArrayOutputStream outStreamPDF = new ByteArrayOutputStream();
 		EngineConfig config;// = new EngineConfig( );
 		// config.setEngineHome( "put engine path here" );
@@ -114,11 +114,11 @@ public class ReportService {
     }
 
 	public InputStream getTemplate(String rptDesign) throws IOException {
-		// logger.debug("The template requested is {}", rptDesign);
+		logger.log(Level.INFO, "The template requested is {}", rptDesign);
 		InputStream file = null;
 		try {
 			file = new ClassPathResource("designs/templates/" + rptDesign + ".rptdesign").getInputStream();
-			// logger.debug("is file available {}", file.available());
+			logger.log(Level.INFO, "is file available {}", file.available());
 			return file;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
