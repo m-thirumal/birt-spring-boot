@@ -28,15 +28,35 @@
     		</exclusions>
 		</dependency>
 		<dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter</artifactId>
+	        <exclusions>
+	            <exclusion>
+	                <groupId>commons-logging</groupId>
+	                <artifactId>commons-logging</artifactId>
+	            </exclusion>
+	        </exclusions>
+	    </dependency>
+		<dependency>
 		    <groupId>org.springdoc</groupId>
-		    <artifactId>springdoc-openapi-ui</artifactId>
-		    <version>1.6.12</version>
+		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+		    <version>2.5.0</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.eclipse.birt.runtime/org.eclipse.birt.runtime -->
 		<dependency>
 		    <groupId>org.eclipse.birt.runtime</groupId>
 		    <artifactId>org.eclipse.birt.runtime</artifactId>
 		    <version>4.4.2</version>
+		     <exclusions>
+		        <exclusion>
+		            <groupId>org.milyn</groupId>
+		            <artifactId>flute</artifactId>
+		        </exclusion>
+		        <exclusion>
+		            <groupId>org.eclipse.birt.runtime</groupId>
+		            <artifactId>org.eclipse.orbit.mongodb</artifactId>
+		        </exclusion>
+    		</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
