@@ -20,3 +20,15 @@
 ## Test
 
 Copy the `XML` from `/src/main/resources/designs/templates/first.xml` and paste it in the input box and try it to generate/download report
+
+## Run Runtime engine
+
+1. Download the file 
+
+2. Give `Execution` permission to `./genReport.sh`
+
+3. Execute the below command to remove `CR LF`
+
+	sed -i -e 's/\r$//' genReport.sh
+	
+4. 
