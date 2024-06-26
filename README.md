@@ -31,4 +31,7 @@ Copy the `XML` from `/src/main/resources/designs/templates/first.xml` and paste 
 
 	sed -i -e 's/\r$//' genReport.sh
 	
-4. 
+4. Then, run the following command for xml input
+   ```
+   ./genReport.sh -m runrender -f PDF -o /Users/thirumal/Downloads/report.pdf -p xmlFilePath=/Users/thirumal/git/birt-spring-boot/src/main/resources/designs/templates/first.xml /Users/thirumal/git/birt-spring-boot/src/main/resources/designs/templates/first.rptdesign
+   ```
