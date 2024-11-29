@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.0</version>
+		<version>3.4.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.thirumal</groupId>
@@ -20,43 +20,17 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-		        <exclusion>
-		            <groupId>ch.qos.logback</groupId>
-		            <artifactId>logback-classic</artifactId>
-		        </exclusion>
-    		</exclusions>
+			
 		</dependency>
 		<dependency>
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-starter</artifactId>
-	        <exclusions>
-	            <exclusion>
-	                <groupId>commons-logging</groupId>
-	                <artifactId>commons-logging</artifactId>
-	            </exclusion>
-	        </exclusions>
+	        
 	    </dependency>
 		<dependency>
 		    <groupId>org.springdoc</groupId>
 		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-		    <version>2.5.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.eclipse.birt.runtime/org.eclipse.birt.runtime -->
-		<dependency>
-		    <groupId>org.eclipse.birt.runtime</groupId>
-		    <artifactId>org.eclipse.birt.runtime</artifactId>
-		    <version>4.4.2</version>
-		     <exclusions>
-		        <exclusion>
-		            <groupId>org.milyn</groupId>
-		            <artifactId>flute</artifactId>
-		        </exclusion>
-		        <exclusion>
-		            <groupId>org.eclipse.birt.runtime</groupId>
-		            <artifactId>org.eclipse.orbit.mongodb</artifactId>
-		        </exclusion>
-    		</exclusions>
+		    <version>2.7.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -90,7 +64,36 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>copy-dependencies</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>copy-dependencies</goal>
+                    </goals>
+                    <configuration>
+                        <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                        <includeScope>runtime</includeScope>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>            
+            <configuration>
+                <archive>
+                    <manifest>
+                        <addClasspath>true</addClasspath>
+                        <classpathPrefix>libs/</classpathPrefix>
+                        <mainClass>com.thirumal.BirtReportApplication</mainClass>
+                    </manifest>
+                </archive>
+            </configuration>
+        </plugin>
 		</plugins>
 	</build>
-
 </project>
